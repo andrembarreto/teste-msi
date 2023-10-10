@@ -35,6 +35,12 @@
       function geoFindMe() {
         const status = document.querySelector("#status");
 
+        const options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        };
+
         function success(position) {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
@@ -54,7 +60,7 @@
           status.textContent = "Geolocation is not supported by your browser";
         } else {
           status.textContent = "Locating…";
-          navigator.geolocation.getCurrentPosition(success, error);
+          navigator.geolocation.getCurrentPosition(success, error, options);
         }
       }
   }
