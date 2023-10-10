@@ -42,10 +42,12 @@
         function success(position) {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
+          const accuracy = position.coords.accuracy
 
           status.textContent = "";
-          mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-          mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+          document.getElementById('latitude').textContent = latitude;
+          document.getElementById('longitude').textContent = longitude;
+          document.getElementById('acuracia').textContent = accuracy;
         }
 
         function error() {
@@ -59,7 +61,6 @@
           navigator.geolocation.getCurrentPosition(success, error);
         }
       }
-  document.querySelector("#find-me").addEventListener("click", geoFindMe);
   }
 
   </script>
@@ -76,9 +77,13 @@
 
   <h1>Geolocation Example</h1>
 
-  <button id="find-me">Show my location</button><br />
+  <button id="find-me" onclick="geoFindMe()">Show my location</button><br/>
   <p id="status"></p>
-  <a id="map-link" target="_blank"></a>
+  <ul>
+    <li>Latitude: <span id="latitude"></span></li>
+    <li>Longitude: <span id="longitude"></span></li>
+    <li>Acurácia <span id="acuracia"></span></li>
+  </ul>
 
 </body>
 </html>
