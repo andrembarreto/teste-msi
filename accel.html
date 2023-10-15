@@ -5,9 +5,12 @@
 </head>
 <body>
   <script>
+    // const pgp = require('pg-promise')();
+    // const db = pgp(connection); // connection yet to be created, since database does not exist at the moment
 
+    // let data = []
     let latitude, longitude, accuracy;
-    
+
     if('geolocation' in navigator) {
       function geoFindMe() {
         const status = document.querySelector("#status");
@@ -60,6 +63,8 @@
           document.getElementById('y-acceleration').textContent = accelerometer.y;
           document.getElementById('z-acceleration').textContent = accelerometer.z;
         });
+        // TODO: check for values that are considered irregular
+        // if detected: data.push(accelerometer.x, ...y, ...z, latitude, longitude)
 
         accelerometer.start();
       });
@@ -67,8 +72,6 @@
     } else {
       // The device does not support the accelerometer sensor.
     }
-
-
   </script>
 
   <h1>Accelerometer Example</h1>
@@ -90,6 +93,8 @@
     <li>Longitude: <span id="longitude"></span></li>
     <li>Precisão: <span id="precisao"></span></li>
   </ul>
+
+  <!-- TODO: button to 'finish trip' (send collected data to the database and stop tracking acceleration and geolocation) -->
 
 </body>
 </html>
