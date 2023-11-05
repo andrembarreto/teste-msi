@@ -65,7 +65,7 @@
           const accelerometer = new Accelerometer();
           
           // Listen for accelerometer readings.
-          accelerometer.addEventListener('reading', displayReadAccelerationData(accelerometer));
+          accelerometer.addEventListener('reading', (event) => displayReadAccelerationData(accelerometer));
 
           // TODO: check for values that are considered irregular
           // if detected: data.push({x: accelerometer.x, y: ...y, z: ...z, latitude: latitude, longitude: longitude})
@@ -83,7 +83,7 @@
             document.getElementById('x-acceleration').textContent = accelerometer.x;
             document.getElementById('y-acceleration').textContent = accelerometer.y;
             document.getElementById('z-acceleration').textContent = accelerometer.z;
-        }
+      }
     }
 
   </script>
@@ -111,7 +111,7 @@
 
   <p></p>
 
-  <button onclick="navigator.geolocation.clearWatch()">Finalizar coleta</button><br/>
+  <!-- <button onclick="navigator.geolocation.clearWatch()">Finalizar coleta</button><br/> -->
 
   <!-- TODO: button to 'finish trip' (send collected data to the database and stop tracking acceleration and geolocation) -->
 
