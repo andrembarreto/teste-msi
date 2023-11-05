@@ -9,26 +9,7 @@
     // const db = pgp(connection); // connection yet to be created, since database does not exist at the moment
 
     // let data = []
-    const button = document.getElementById('startCollectingDataButton');
-    
-    if ('Accelerometer' in window) {
-      // Request permission from the user to access the accelerometer sensor.
-      navigator.permissions.query({ name: "accelerometer" }).then((result) => {
-        
-        if (result.state === "denied") {
-          warn("É necessária a permissão para uso do acelerômetro");
-          button.disabled = true;
-          
-        } else {
-          const accelerometer = new Accelerometer();
-        }
-      });
-      
-    } else {
-      // The device does not support the accelerometer sensor.
-      warn("Não há suporte para o acesso ao sensor de aceleração");
-      button.disabled = true;
-    }
+    let accelerometer; // global accelerometer object
     
     function startCollectingData() {
       trackPosition();
@@ -68,12 +49,22 @@
       } else {
         // The device does not support geolocation
         warn("Seu navegador não possui suporte à geolocalização");
-        button.disabled = true;
       }
     }
     
     // Check if the device supports the accelerometer sensor.
     function trackAcceleration(accelerometer) {
+      if ('Accelerometer' in window) {
+        // Request permission from the user to access the accelerometer sensor.
+        navigator.permissions.query({ name: "accelerometer" }).then((result) => {
+          
+          if (result.state === "denied") {
+            warn("É necessária a permissão para uso do acelerômetro");
+            return;
+          }
+
+          accelerometer = new Accelerometer();
+
           // Listen for accelerometer readings.
           accelerometer.addEventListener('reading', (event) => displayReadAccelerationData(accelerometer));
 
@@ -81,14 +72,20 @@
           // if detected: data.push({x: accelerometer.x, y: ...y, z: ...z, latitude: latitude, longitude: longitude})
 
           accelerometer.start();
+          
+        });
+      } else {
+        // The device does not support the accelerometer sensor.
+        warn("Não há suporte para o acesso ao sensor de aceleração");
       }
+    }
 
-      function displayReadAccelerationData(accelerometer) {
-            // Update the DOM with the acceleration data.
-            document.getElementById('x-acceleration').textContent = accelerometer.x;
-            document.getElementById('y-acceleration').textContent = accelerometer.y;
-            document.getElementById('z-acceleration').textContent = accelerometer.z;
-      }
+    function displayReadAccelerationData(accelerometer) {
+          // Update the DOM with the acceleration data.
+          document.getElementById('x-acceleration').textContent = accelerometer.x;
+          document.getElementById('y-acceleration').textContent = accelerometer.y;
+          document.getElementById('z-acceleration').textContent = accelerometer.z;
+    }
 
   </script>
 
