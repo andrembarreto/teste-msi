@@ -10,6 +10,7 @@
 
     // let data = []
     let accelerometer; // global accelerometer object
+    let geolocationWatchId; // identifier for the geolocation tracker to use in clearWatch()
     
     function startCollectingData() {
       trackPosition();
@@ -17,9 +18,16 @@
     }
 
     function stopCollectingData() {
-      navigator.geolocation.clearWatch();
-      accelerometer.removeEventListener('reading', displayReadAccelerationData);
-      accelerometer.stop();
+
+      if(geolocationWatchId) {
+        navigator.geolocation.clearWatch(geolocationWatchId);
+      }
+
+      if(accelerometer) {
+        accelerometer.removeEventListener('reading', displayReadAccelerationData);
+        accelerometer.stop();
+      }
+      
       clearText();
     }
     
@@ -51,7 +59,7 @@
         }
 
         status.textContent = "Localizando...";
-        navigator.geolocation.watchPosition(success, error, options);
+        geolocationWatchId = navigator.geolocation.watchPosition(success, error, options);
 
       } else {
         // The device does not support geolocation
