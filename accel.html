@@ -13,7 +13,14 @@
     
     function startCollectingData() {
       trackPosition();
-      trackAcceleration(accelerometer);
+      trackAcceleration();
+    }
+
+    function stopCollectingData() {
+      navigator.geolocation.clearWatch();
+      accelerometer.removeEventListener('reading', displayReadAccelerationData);
+      accelerometer.stop();
+      clearText();
     }
     
     let latitude, longitude, accuracy;
@@ -52,8 +59,8 @@
       }
     }
     
-    // Check if the device supports the accelerometer sensor.
-    function trackAcceleration(accelerometer) {
+    function trackAcceleration() {
+      // Check if the device supports the accelerometer sensor.
       if ('Accelerometer' in window) {
         // Request permission from the user to access the accelerometer sensor.
         navigator.permissions.query({ name: "accelerometer" }).then((result) => {
@@ -66,7 +73,7 @@
           accelerometer = new Accelerometer();
 
           // Listen for accelerometer readings.
-          accelerometer.addEventListener('reading', (event) => displayReadAccelerationData(accelerometer));
+          accelerometer.addEventListener('reading', displayReadAccelerationData);
 
           // TODO: check for values that are considered irregular
           // if detected: data.push({x: accelerometer.x, y: ...y, z: ...z, latitude: latitude, longitude: longitude})
@@ -80,11 +87,20 @@
       }
     }
 
-    function displayReadAccelerationData(accelerometer) {
+    function displayReadAccelerationData() {
           // Update the DOM with the acceleration data.
           document.getElementById('x-acceleration').textContent = accelerometer.x;
           document.getElementById('y-acceleration').textContent = accelerometer.y;
           document.getElementById('z-acceleration').textContent = accelerometer.z;
+    }
+
+    function clearText() {
+      document.getElementById('latitude').textContent = "";
+      document.getElementById('longitude').textContent = "";
+      document.getElementById('precisao').textContent = "";
+      document.getElementById('x-acceleration').textContent = "";
+      document.getElementById('y-acceleration').textContent = "";
+      document.getElementById('z-acceleration').textContent = "";
     }
 
   </script>
@@ -112,7 +128,7 @@
 
   <p></p>
 
-  <!-- <button onclick="navigator.geolocation.clearWatch()">Finalizar coleta</button><br/> -->
+  <button id="stopCollectingDataButton" onclick="stopCollectingData()">Finalizar coleta</button><br/>
 
   <!-- TODO: button to 'finish trip' (send collected data to the database and stop tracking acceleration and geolocation) -->
 
