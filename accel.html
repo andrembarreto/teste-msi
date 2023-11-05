@@ -103,12 +103,12 @@
     }
 
     function clearText() {
-      document.getElementById('latitude').textContent = "";
-      document.getElementById('longitude').textContent = "";
-      document.getElementById('precisao').textContent = "";
-      document.getElementById('x-acceleration').textContent = "";
-      document.getElementById('y-acceleration').textContent = "";
-      document.getElementById('z-acceleration').textContent = "";
+      document.getElementById('latitude').textContent = "--";
+      document.getElementById('longitude').textContent = "--";
+      document.getElementById('precisao').textContent = "--";
+      document.getElementById('x-acceleration').textContent = "--";
+      document.getElementById('y-acceleration').textContent = "--";
+      document.getElementById('z-acceleration').textContent = "--";
     }
 
   </script>
@@ -118,18 +118,18 @@
   <p>Os dados de aceleração são:</p>
 
   <ul>
-    <li>X: <span id="x-acceleration"></span></li>
-    <li>Y: <span id="y-acceleration"></span></li>
-    <li>Z: <span id="z-acceleration"></span></li>
+    <li>X: <span id="x-acceleration">--</span></li>
+    <li>Y: <span id="y-acceleration">--</span></li>
+    <li>Z: <span id="z-acceleration">--</span></li>
   </ul>
 
   <h1>Geolocalização</h1>
 
   <p id="status"></p>
   <ul>
-    <li>Latitude: <span id="latitude"></span></li>
-    <li>Longitude: <span id="longitude"></span></li>
-    <li>Precisão: <span id="precisao"></span></li>
+    <li>Latitude: <span id="latitude">--</span></li>
+    <li>Longitude: <span id="longitude">--</span></li>
+    <li>Precisão: <span id="precisao">--</span></li>
   </ul>
   
   <button id="startCollectingDataButton" onclick="startCollectingData()">Iniciar coleta</button><br/>
