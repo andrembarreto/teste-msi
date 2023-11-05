@@ -11,8 +11,13 @@
     // let data = []
     let latitude, longitude, accuracy;
 
-    if('geolocation' in navigator) {
-      function geoFindMe() {
+    function startCollectingData() {
+      trackPosition();
+      trackAcceleration();
+    }
+
+    function trackPosition() {
+      if('geolocation' in navigator) {
         const status = document.querySelector("#status");
 
         const options = {
@@ -40,41 +45,52 @@
           status.textContent = "Geolocation is not supported by your browser";
         } else {
           status.textContent = "Locating…";
-          navigator.geolocation.getCurrentPosition(success, error, options);
           navigator.geolocation.watchPosition(success, error, options);
         }
-      }
-  }
-    // Check if the device supports the accelerometer sensor.
-    if ('Accelerometer' in window) {
-      // Request permission from the user to access the accelerometer sensor.
-      navigator.permissions.query({ name: "accelerometer" }).then((result) => {
-      if (result.state === "denied") {
-        console.log("Permission to use accelerometer sensor is denied.");
-        return;
-      }
-        // Create a new Accelerometer object.
-        const accelerometer = new Accelerometer();
-        
-        // Listen for accelerometer readings.
-        accelerometer.addEventListener('reading', () => {
-          // Update the DOM with the acceleration data.
-          document.getElementById('x-acceleration').textContent = accelerometer.x;
-          document.getElementById('y-acceleration').textContent = accelerometer.y;
-          document.getElementById('z-acceleration').textContent = accelerometer.z;
-        });
-        // TODO: check for values that are considered irregular
-        // if detected: data.push(accelerometer.x, ...y, ...z, latitude, longitude)
 
-        accelerometer.start();
-      });
-
-    } else {
-      // The device does not support the accelerometer sensor.
+      } else {
+        // The device does not support geolocation
+        warn("Access to geolocation is not supported");
+      }
     }
+    
+    // Check if the device supports the accelerometer sensor.
+    function trackAcceleration() {
+      if ('Accelerometer' in window) {
+
+        // Request permission from the user to access the accelerometer sensor.
+        navigator.permissions.query({ name: "accelerometer" }).then((result) => {
+          if (result.state === "denied") {
+            warn("Permission to use accelerometer is necessary");
+            return;
+          }
+
+          // Create a new Accelerometer object.
+          const accelerometer = new Accelerometer();
+          
+          // Listen for accelerometer readings.
+          accelerometer.addEventListener('reading', () => {
+            // Update the DOM with the acceleration data.
+            document.getElementById('x-acceleration').textContent = accelerometer.x;
+            document.getElementById('y-acceleration').textContent = accelerometer.y;
+            document.getElementById('z-acceleration').textContent = accelerometer.z;
+          });
+
+          // TODO: check for values that are considered irregular
+          // if detected: data.push({x: accelerometer.x, y: ...y, z: ...z, latitude: latitude, longitude: longitude})
+
+          accelerometer.start();
+        });
+
+      } else {
+        // The device does not support the accelerometer sensor.
+        warn("Access to the accelerometer sensor is not supported");
+      }
+    }
+
   </script>
 
-  <h1>Accelerometer Example</h1>
+  <h1>Aceleração</h1>
 
   <p>The acceleration data is:</p>
 
@@ -84,9 +100,10 @@
     <li>Z: <span id="z-acceleration"></span></li>
   </ul>
 
-  <h1>Geolocation Example</h1>
+  <h1>Geolocalização</h1>
 
-  <button id="find-me" onclick="geoFindMe()">Show my location</button><br/>
+  <button onclick="startCollectingData()">Iniciar coleta</button><br/>
+  
   <p id="status"></p>
   <ul>
     <li>Latitude: <span id="latitude"></span></li>
