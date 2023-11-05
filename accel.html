@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Accelerometer Example</title>
+  <title>Coletor de dados</title>
 </head>
 <body>
   <script>
@@ -38,19 +38,15 @@
         }
 
         function error() {
-          status.textContent = "Unable to retrieve your location";
+          status.textContent = "Erro na obtenção da localização";
         }
 
-        if (!navigator.geolocation) {
-          status.textContent = "Geolocation is not supported by your browser";
-        } else {
-          status.textContent = "Locating…";
-          navigator.geolocation.watchPosition(success, error, options);
-        }
+        status.textContent = "Localizando...";
+        navigator.geolocation.watchPosition(success, error, options);
 
       } else {
         // The device does not support geolocation
-        warn("Access to geolocation is not supported");
+        warn("Seu navegador não possui suporte à geolocalização");
       }
     }
     
@@ -61,7 +57,7 @@
         // Request permission from the user to access the accelerometer sensor.
         navigator.permissions.query({ name: "accelerometer" }).then((result) => {
           if (result.state === "denied") {
-            warn("Permission to use accelerometer is necessary");
+            warn("É necessária a permissão para uso do acelerômetro");
             return;
           }
 
@@ -84,7 +80,7 @@
 
       } else {
         // The device does not support the accelerometer sensor.
-        warn("Access to the accelerometer sensor is not supported");
+        warn("Não há suporte para o acesso ao sensor de aceleração");
       }
     }
 
@@ -92,7 +88,7 @@
 
   <h1>Aceleração</h1>
 
-  <p>The acceleration data is:</p>
+  <p>Os dados de aceleração são:</p>
 
   <ul>
     <li>X: <span id="x-acceleration"></span></li>
@@ -100,16 +96,16 @@
     <li>Z: <span id="z-acceleration"></span></li>
   </ul>
 
-  <h1>Geolocalização</h1>
+  <h1>Geolocalização:</h1>
 
-  <button onclick="startCollectingData()">Iniciar coleta</button><br/>
-  
   <p id="status"></p>
   <ul>
     <li>Latitude: <span id="latitude"></span></li>
     <li>Longitude: <span id="longitude"></span></li>
     <li>Precisão: <span id="precisao"></span></li>
   </ul>
+  
+  <button onclick="startCollectingData()">Iniciar coleta</button><br/>
 
   <!-- TODO: button to 'finish trip' (send collected data to the database and stop tracking acceleration and geolocation) -->
 
